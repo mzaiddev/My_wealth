@@ -7,10 +7,13 @@ import { CiFileOn } from "react-icons/ci";
 import { useMainContext } from "@/components/Context_Api/MainContext";
 import { useRouter } from "next/navigation";
 import useApi from "../../../../util/useApi";
+import { useState } from "react";
 const page = () => {
   const { fetchData } = useApi();
   const { userFileDocument, setUserFileDocument } = useMainContext();
+  const [loadingUpload, setLoadingUpload] = useState(false);
   function fileupload(file) {
+    setLoadingUpload(true);
     const formData = new FormData();
     formData.append("file", file);
     fetchData(
@@ -27,6 +30,7 @@ const page = () => {
           ...prev,
           addressfile: res?.file?.fileName,
         }));
+        setLoadingUpload(false);
       }
     );
   }
@@ -68,7 +72,9 @@ const page = () => {
           <CiFileOn size={35} color="black" />
 
           <p className="md:text-[14px] text-[10px] text-black truncate overflow-hidden whitespace-nowrap text-center">
-            {userFileDocument?.addressfile
+            {loadingUpload
+              ? "Uploading"
+              : userFileDocument?.addressfile
               ? userFileDocument?.addressfile
               : "Select the files. Supported files are PNG, JPG, PDF."}
           </p>
