@@ -23,6 +23,8 @@ const validationSchema = Yup.object({
 });
 const Page = () => {
   const { fetchData } = useApi();
+  const [emailExists, setEmailExists] = useState(false);
+  const [emailErrorMessage, setEmailErrorMessage] = useState("");
   const router = useRouter();
   const { userDetail, setUserDetail } = useMainContext();
   const {
@@ -33,9 +35,11 @@ const Page = () => {
     setTouched,
     handleSubmit,
     setFieldTouched,
+    submitCount,
     isSubmitting,
     setFieldError,
     setFieldValue,
+    setSubmitting,
   } = useFormik({
     initialValues: {
       firstName: "",
@@ -46,15 +50,20 @@ const Page = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      setUserDetail((prev) => {
-        return {
-          ...prev,
-          ...values,
-        };
-      });
-      router.push("/user/legaladdress");
+      if (emailExists) {
+        setSubmitting(false);
+      } else {
+        setUserDetail((prev) => {
+          return {
+            ...prev,
+            ...values,
+          };
+        });
+        router.push("/user/legaladdress");
+      }
     },
   });
+  console.log(errors, "check error messgae");
   function checkemailvaidation(email) {
     let data = {
       email: email,
@@ -69,6 +78,11 @@ const Page = () => {
       (res, status) => {
         if (!status) {
           setFieldError("email", "Email already exists. Enter a unique email.");
+          setEmailErrorMessage("Email already exists. Enter a unique email.");
+          setEmailExists(true);
+        } else {
+          setEmailExists(false);
+          setEmailErrorMessage("");
         }
       }
     );
@@ -152,11 +166,15 @@ const Page = () => {
             onChange={(e) => {
               setFieldValue("email", e.target.value);
               checkemailvaidation(e.target.value);
-              if (!touched.email) {
-                setTouched({ ...touched, email: true });
-              }
+              // if (!touched.email) {
+              //   setTouched({ ...touched, email: true });
+              // }
             }}
-            error={errors.email && touched.email ? errors.email : ""}
+            error={
+              submitCount > 0 && touched.email
+                ? errors.email
+                : "" || (emailErrorMessage && emailErrorMessage)
+            }
           />
           <Button text="Continue" type="submit" loading={isSubmitting} />
         </form>

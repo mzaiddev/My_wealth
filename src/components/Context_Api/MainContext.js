@@ -11,7 +11,7 @@ export const AppProvider = ({ children }) => {
   const [userDetail, setUserDetail] = useState();
   const [timeLeft, setTimeLeft] = useState(10 * 60);
   const [userFileDocument, setUserFileDocument] = useState({});
-  function CreateUser() {
+  function CreateUser(payloadData) {
     let payload = {
       firstName: userDetail?.firstName || "",
       lastName: userDetail?.lastName || "",
@@ -24,9 +24,9 @@ export const AppProvider = ({ children }) => {
       city: userDetail?.city || "",
       country: userDetail?.country || "",
       zip_code: userDetail?.zip_postal_code || "",
-      terms_and_conditions: userDetail?.terms_and_condition || false,
-      privacy_policy: userDetail?.privacy_policy || false,
-      refund_policy: userDetail?.refund_policy || false,
+      terms_and_conditions: payloadData?.terms_and_condition || false,
+      privacy_policy: payloadData?.privacy_policy || false,
+      refund_policy: payloadData?.refund_policy || false,
       isVerified: false,
       id_or_password: "678402a42c1f62c6d732942b",
       address_conformation: "678402a42c1f62c6d732942b",

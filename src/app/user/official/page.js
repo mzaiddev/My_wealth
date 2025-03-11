@@ -20,13 +20,7 @@ const OfficialPage = () => {
     },
     validationSchema,
     onSubmit: (values) => {
-      setUserDetail((prev) => {
-        return {
-          ...prev,
-          ...values,
-        };
-      });
-      CreateUser();
+      CreateUser(values);
     },
   });
   const policyItems = [
