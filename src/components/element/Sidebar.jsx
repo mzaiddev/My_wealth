@@ -34,13 +34,12 @@ function Sidebar() {
                       height={20}
                       className="group-hover:brightness-50 transition-all duration-200"
                     />
-                   <span
-  className="block font-bold group-hover:text-gray-600 transition-all duration-200"
-  style={{ color: "#5F6471" }} // Apply custom color
->
-  {item.label}
-</span>
-
+                    <span
+                      className="block font-bold group-hover:text-gray-600 transition-all duration-200"
+                      style={{ color: "#5F6471" }} // Apply custom color
+                    >
+                      {item.label}
+                    </span>
                   </div>
                 </Link>
               </li>
